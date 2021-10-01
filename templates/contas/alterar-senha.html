@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<section class="py-5">
+    <div class="container px-5">
+        <h2>Alterar senha</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                <p>{{ field.label_tag }} {{ field }} </p>
+                {% if form.errors %}
+                    {% for error in field.errors %}
+                    <p class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </p>
+                    {% endfor %}
+                {% endif %}
+                {% if field.help_text %}
+                <p class="form-text">{{ field.help_text|safe }}</p>
+                {% endif %}
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Atualizar Senha</button>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

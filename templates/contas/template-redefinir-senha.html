@@ -1,0 +1,12 @@
+{% autoescape off %}
+  Foi solicitado a redefinição de senha para seu email {{ user.email }} no Turismo Shared,
+  clique no link abaixo para definir uma nova senha de acesso :
+
+  {{ protocol }}://{{ domain }}{% url 'confirmar_redefinir_senha' uidb64=uid token=token %}
+
+  Se clicar no link não funcionar, por favor copie e cole no campo URL do seu navegador em
+  uma nova janela.
+
+  Atenciosamente,
+  Equipe Turismo Shared
+{% endautoescape %}
