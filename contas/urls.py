@@ -1,14 +1,13 @@
 from django.urls import path
 
 from .views import (
-    login, logout, perfil, home,
+    login, logout, perfil,
     CadastroCreateView, AlterarSenhaView, RedefinirSenhaView,
     RedefinirSenhaConfirmarView
 )
 
 
 urlpatterns = [
-    path('', home, name="home"),
     path('login/', login, name="login"),
     path('logout/', logout, name="logout"),
     path('cadastro/', CadastroCreateView.as_view(), name="cadastro"),
