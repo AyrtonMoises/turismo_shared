@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<script src="https://unpkg.com/htmx.org@1.5.0"></script>
+{% endblock %}
+
+{% block content %}
+<div class="row gx-5">
+    <div class="col-lg-3">
+        <div class="d-flex align-items-center mt-lg-5 mb-4">
+            <img class="img-fluid rounded-circle"
+            src="{% if viagem.user.perfil.foto %} {{ viagem.user.perfil.foto.url }} {% else %} {% static 'assets/default-avatar.jpeg' %} {% endif %}"
+            height="50px" width="50px"/>
+            <div class="ms-3">
+                <div class="fw-bold">{{ viagem.user.full_name }}</div>
+                <div class="text-muted">Viajante</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-9">
+        <!-- Post content-->
+        <article>
+            <!-- Post header-->
+            <header class="mb-4">
+                <!-- Post title-->
+                <h1 class="fw-bolder mb-1">{{ viagem.titulo }}</h1>
+                <!-- Post meta content-->
+                <div class="text-muted fst-italic mb-2">{{ viagem.data_postado|date:'d \d\e F, Y' }}</div>
+                <!-- Post categories-->
+                <a class="badge bg-secondary text-decoration-none link-light" href="#!">{{ viagem.localidade }}</a>
+            </header>
+            <!-- Preview image figure-->
+            <figure class="mb-4"><img class="img-fluid rounded" src="{{ viagem.foto.url }}" height="400x" width="900px"/></figure>
+            <!-- Post content-->
+            <section class="mb-5">
+                <div class="fs-5 mb-4"><p >{{ viagem.resumo|linebreaks }}</p></div>
+
+                {% for ponto_turistico in viagem.ponto_turistico_viagem.all %}
+                <h4 class="fw-bolder mb-3 mt-5">{{ ponto_turistico.titulo }}</h4>
+                <figure class="mb-4"><img class="img-fluid rounded" src="{{ ponto_turistico.foto.url }}" height="400x" width="900px"/></figure>        
+                <div class="fs-5 mb-4"><p >{{ ponto_turistico.opiniao|linebreaks }}</p></div>    
+                {% endfor %}
+                {% for _ in ''|center:viagem.avaliacao %}
+                <i class="bi bi-star-fill fs-2 text-warning"></i>
+                {% endfor %}
+                <p class="fs-5 mb-4">Avaliação geral: {{ viagem.get_avaliacao_display }}</p>
+
+                <div class="mb-2" hx-target="this" hx-swap="outerHTML" >
+                    {% if user.is_authenticated %}
+
+                    {% if user in viagem.likes.all %}
+                        <p>Obrigado por gostar da publicação!</p>
+                        <a class="text-decoration-none" hx-swap="outerHTML swap:1s" href="#"
+                        hx-post="{% url 'like-post' viagem.id %}">
+                            <i class="fs-1 bi bi-hand-thumbs-up-fill">{{ viagem.likes.count }}</i>
+                        </a>
+                    {% else %}
+                        <p>Deixe um like se gostou!</p>
+                        <a class="text-decoration-none" hx-swap="outerHTML swap:1s" href="#"
+                        hx-post="{% url 'like-post' viagem.id %}">
+                            <i class="fs-1 bi bi-hand-thumbs-up ">{{ viagem.likes.count }}</i>
+                        </a>
+                    {% endif %}
+
+                    {% else %}
+                        <i class="fs-1 bi bi-hand-thumbs-up">{{ viagem.likes.count }}</i>
+                    {% endif %}
+                </div>
+
+            </section>
+
+        </article>
+        <!-- Comments section-->
+        {% include 'viagens/post_viagem/comentarios.html' %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script>
+    document.body.addEventListener('htmx:configRequest', (event) => {
+        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        document.getElementById("form-comentario").reset();
+    })
+</script>
+{% endblock %}

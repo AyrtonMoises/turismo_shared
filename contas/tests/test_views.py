@@ -65,7 +65,7 @@ class CadastroViewTestCase(TestCase):
         }
         response = self.client.post(self.register_url, data)
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'contas/cadastro.html')
+        self.assertTemplateUsed(response, 'contas/cadastro-usuario.html')
         self.assertEquals(self.model_user.objects.count(), 0)
 
     def test_cadastro_sem_email(self):
@@ -76,7 +76,7 @@ class CadastroViewTestCase(TestCase):
         }
         response = self.client.post(self.register_url, data)
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'contas/cadastro.html')
+        self.assertTemplateUsed(response, 'contas/cadastro-usuario.html')
         self.assertEquals(self.model_user.objects.count(), 0)
 
 

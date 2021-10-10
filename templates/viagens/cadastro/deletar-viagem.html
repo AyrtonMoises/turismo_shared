@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Deletar viagem</h2>
+<form method="post">
+    {% csrf_token %}
+
+    <p>Você deseja deletar a viagem "{{ object }}"?</p>
+
+    <button type="submit" class="btn btn-primary">Confirmar</button>
+</form>
+
+{% endblock %}

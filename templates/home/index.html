@@ -1,12 +1,8 @@
 {% extends 'base.html' %}
-{% load static %}
 
-
-<!-- Page Content-->
 {% block content %}
-<section class="py-5">
-    <div class="container px-5">
-    {% include 'partials/_alertas.html' %}
-    </div>
-</section>
+
+{% include 'home/partials/_destaques.html' %}
+{% include 'home/partials/_ultimas_viagens.html' %}
+
 {% endblock %}

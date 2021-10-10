@@ -1,0 +1,15 @@
+<div class="mb-2" hx-target="this" hx-swap="outerHTML" >
+    {% if user in viagem.likes.all %}
+        <p>Obrigado por gostar da publicação!</p>
+        <a href="#" class="text-decoration-none" hx-swap="outerHTML swap:1s" 
+        hx-post="{% url 'like-post' viagem.id %}">
+            <i class="fs-1 bi bi-hand-thumbs-up-fill text-primary">{{ viagem.likes.count }}</i>
+        </button>
+    {% else %}
+        <p>Deixe um like se gostou!</p>
+        <a class="text-decoration-none" hx-swap="outerHTML swap:1s" href="#"
+        hx-post="{% url 'like-post' viagem.id %}">
+            <i class="fs-1 bi bi-hand-thumbs-up ">{{ viagem.likes.count }}</i>
+        </a>
+    {% endif %}
+</div>

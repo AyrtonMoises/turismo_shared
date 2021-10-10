@@ -56,7 +56,7 @@ class CadastroCreateView(CreateView):
     """ Cadastro do usuário no sistema """
     form_class = UserForm
     model = User
-    template_name = 'contas/cadastro.html'
+    template_name = 'contas/cadastro-usuario.html'
     success_url = reverse_lazy('perfil')
 
     def form_valid(self, form):
@@ -99,10 +99,10 @@ class AlterarSenhaView(SuccessMessageMixin, PasswordChangeView):
 
 class RedefinirSenhaView(SuccessMessageMixin, PasswordResetView):
     """ Envia email de recuperação de senha """
-    template_name = 'contas/redefinir-senha.html'
+    template_name = 'contas/redefinicao-senha/redefinir-senha.html'
     form_class = RecuperarSenhaForm
-    email_template_name = 'contas/template-redefinir-senha.html'
-    subject_template_name = 'contas/assunto-redefinir-senha'
+    email_template_name = 'contas/redefinicao-senha/template-redefinir-senha.html'
+    subject_template_name = 'contas/redefinicao-senha/assunto-redefinir-senha'
     success_message = "Um email foi enviado para sua caixa de entrada." \
                       "Verifique também sua caixa de spam antes de tentar novamente." 
     success_url = reverse_lazy('login')
@@ -110,10 +110,6 @@ class RedefinirSenhaView(SuccessMessageMixin, PasswordResetView):
 
 class RedefinirSenhaConfirmarView(SuccessMessageMixin, PasswordResetConfirmView):
     """ Redefinir senha """
-    template_name='contas/confirmar-redefinir-senha.html'
+    template_name='contas/redefinicao-senha/confirmar-redefinir-senha.html'
     success_url=reverse_lazy('login')
     success_message = "Senha alterada com sucesso!"
-
-def home(request):
-    """ Página principal do site """
-    return render(request, 'home/index.html')

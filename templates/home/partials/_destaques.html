@@ -1,0 +1,34 @@
+
+<h1 class="fw-bolder fs-3 mb-4">Destaques</h1>
+
+<div id="destaques" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner border-0 shadow rounded-3 overflow-hidden">
+
+      {% for destaque in destaques %}
+      <div class="carousel-item {% if forloop.first %} active {% endif %}">
+        <div class="card-body p-0">
+          <div class="row gx-0">
+            <div class="col-lg-6 col-xl-5 py-lg-5">
+              <div class="p-4 p-md-5">
+                <div class="badge bg-info bg-gradient rounded-pill mb-2">
+                  {{ destaque.user.full_name }}
+                </div>
+                <div class="h2 fw-bolder">{{ destaque.titulo }}</div>
+                <p>{{ destaque.resumo|truncatechars:60 }}</p>
+                <a class="stretched-link text-decoration-none" href="{% url 'post-viagem' pk=destaque.id %}">
+                  Leia mais
+                  <i class="bi bi-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-6 col-xl-7">
+              <div class="bg-featured-blog" style="background-image: url('{{ destaque.foto.url }}')">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+     {% endfor %}
+
+    </div>
+</div>

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<script src="https://unpkg.com/htmx.org@1.5.0"></script>
+{% endblock %}
+
+{% block content %}
+<h2>Pontos turísticos</h2>
+<button type="button" class="btn btn-primary" hx-get="{% url 'criar-form-ponto-turistico' %}" 
+    hx-target="#rowforms" hx-swap="beforeend">
+    Nova linha
+</button>
+<a style="float: right;" class="btn btn-primary" href="{{ viagem.get_absolute_url }}">Voltar</a>
+<div id="rowforms"></div>
+<div class="border-t border-gray-100">
+    {% for ponto_turistico in pontos_turisticos %}
+    {% include "viagens/ponto_turistico/detail-ponto-turistico.html" %}
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    document.body.addEventListener('htmx:configRequest', (event) => {
+        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+    })
+</script>
+{% endblock %}

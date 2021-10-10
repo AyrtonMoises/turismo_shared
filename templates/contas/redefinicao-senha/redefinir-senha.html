@@ -3,7 +3,7 @@
 {% block content %}
 
 
-<h2>Alterar senha</h2>
+<h2>Redefinir de senha</h2>
 
 <form method="POST">
     {% csrf_token %}
@@ -20,7 +20,7 @@
     <p class="form-text">{{ field.help_text|safe }}</p>
     {% endif %}
     {% endfor %}
-    <button type="submit" class="btn btn-primary">Atualizar Senha</button>
+    <button type="submit" class="btn btn-primary">Redefinir Senha</button>
 </form>
 
 

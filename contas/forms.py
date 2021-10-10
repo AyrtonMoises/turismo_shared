@@ -66,17 +66,20 @@ class UserPerfilForm(forms.ModelForm):
     )
     class Meta:
         model = User
-        fields = ['email','first_name','last_name',]
+        fields = ['first_name','last_name','email',]
 
 
 class PerfilForm(forms.ModelForm):
     biografia = forms.CharField(
         label='Biografia',
         required=False, 
-        widget=forms.Textarea(attrs={'class': "form-control"})
+        widget=forms.Textarea(attrs={
+            'class': "form-control",
+            'rows': '4',
+        })
     )
     foto = forms.FileField(
-        label='Atualizar foto',
+        label='Enviar foto',
         required=False,
         widget=forms.FileInput(attrs={'class': "form-control"})
     )

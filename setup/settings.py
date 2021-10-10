@@ -27,9 +27,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'contas',
     'widget_tweaks',
     'django_cleanup.apps.CleanupConfig',
+    'django_filters',
+    'contas',
+    'viagens',
 ]
 
 MIDDLEWARE = [

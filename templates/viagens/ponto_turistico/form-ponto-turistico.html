@@ -1,0 +1,26 @@
+<div hx-target="this" hx-swap="outerHTML" class="mt-3 py-3 px-3 bg-white shadow border border-gray-100">
+<form method="POST" hx-encoding='multipart/form-data'>
+    {% csrf_token %}
+    {% for field in form %}
+    <p>{{ field.label_tag }} {{ field }} </p>
+    {% if form.errors %}
+    {% for error in field.errors %}
+    <p class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+    </p>
+    {% endfor %}
+    {% endif %}
+    {% if field.help_text %}
+    <p class="form-text">{{ field.help_text|safe }}</p>
+    {% endif %}
+    {% endfor %}
+
+    {% if ponto_turistico %}
+    <button type="submit" class="btn btn-primary" hx-post="{% url 'atualizar-ponto-turistico' ponto_turistico.id %}">Salvar</button>
+    <button type="button" class="btn btn-danger" hx-get="{% url 'detalhes-ponto-turistico' ponto_turistico.id %}" >Cancelar</button>
+    {% else %}
+    <button type="submit" class="btn btn-primary" hx-post=".">Salvar</button>
+    {% endif %}
+
+</form>
+</div>

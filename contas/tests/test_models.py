@@ -22,7 +22,7 @@ class UserTestCase(TestCase):
 
     def test_create_user(self):
         """ Criar um usuário """
-        user = User.objects.create_user(
+        User.objects.create_user(
             email='meuemail2@email.com',
             first_name="Primeiro Nome2",
             last_name="Sobrenome2",

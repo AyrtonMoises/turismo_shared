@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<a style="float: right;" class="btn btn-primary" href="{% url 'minhas-viagens' %}">
+    Voltar
+</a>
+<h2>Viagem</h2>
+{% if viagem.foto %}
+<img src="{{ viagem.foto.url }}" class="rounded mx-auto d-block" height="300px" width="500px">
+{% endif %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+    <p>{{ field.label_tag }} {{ field }} </p>
+    {% if form.errors %}
+    {% for error in field.errors %}
+    <p class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+    </p>
+    {% endfor %}
+    {% endif %}
+    {% if field.help_text %}
+    <p class="form-text">{{ field.help_text|safe }}</p>
+    {% endif %}
+    {% endfor %}
+    
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    {% if viagem %}
+    <a href="{% url 'deletar-viagem' pk=viagem.pk %}" class="btn btn-danger">Deletar</a>
+    <a style="float: right;" class="btn btn-primary float-right" href="{% url 'criar-ponto-turistico' id_viagem=viagem.pk %}">
+        Adicionar pontos turísticos
+    </a>
+    {% endif %}
+
+</form>
+
+{% endblock %}

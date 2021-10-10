@@ -1,50 +1,44 @@
 {% extends 'base.html' %}
-{% load widget_tweaks %}
 {% load static %}
 {% block content %}
 
-<section class="py-5">
-    <div class="container px-5">
-        <h2>Meu perfil</h2>
-        {% include 'partials/_alertas.html' %}
+<h2>Meu perfil</h2>
 
-        <form method="POST" enctype="multipart/form-data">
-            {% if user.perfil.foto %}
-            <img src="{{ user.perfil.foto.url }}" class="rounded mx-auto d-block" alt="...">
-            {% else %}
-            <img src="{% static 'assets/default-avatar.jpeg' %}" class="rounded mx-auto d-block" alt="...">
-            {% endif %}
+<form method="POST" enctype="multipart/form-data">
+    {% if user.perfil.foto %}
+    <img src="{{ user.perfil.foto.url }}" class="rounded mx-auto d-block" height="300px" width="300px">
+    {% else %}
+    <img src="{% static 'assets/default-avatar.jpeg' %}" class="rounded mx-auto d-block" alt="...">
+    {% endif %}
 
-            {% csrf_token %}
-            {% for field in form_user %}
-                <p>{{ field.label_tag }} {{ field }} </p>
-                {% if form.errors %}
-                    {% for error in field.errors %}
-                    <p class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </p>
-                    {% endfor %}
-                {% endif %}
-                {% if field.help_text %}
-                <p class="form-text">{{ field.help_text|safe }}</p>
-                {% endif %}
+    {% csrf_token %}
+    {% for field in form_user %}
+        <p>{{ field.label_tag }} {{ field }} </p>
+        {% if form.errors %}
+            {% for error in field.errors %}
+            <p class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </p>
             {% endfor %}
-            {% for field in form_perfil %}
-                <p>{{ field.label_tag }} {{ field }} </p>
-                {% if form.errors %}
-                    {% for error in field.errors %}
-                    <p class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </p>
-                    {% endfor %}
-                {% endif %}
-                {% if field.help_text %}
-                <p class="form-text">{{ field.help_text|safe }}</p>
-                {% endif %}
+        {% endif %}
+        {% if field.help_text %}
+        <p class="form-text">{{ field.help_text|safe }}</p>
+        {% endif %}
+    {% endfor %}
+    {% for field in form_perfil %}
+        <p>{{ field.label_tag }} {{ field }} </p>
+        {% if form.errors %}
+            {% for error in field.errors %}
+            <p class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </p>
             {% endfor %}
-            <button type="submit" class="btn btn-primary">Atualizar Perfil</button>
-        </form>
-    </div>
-</section>
+        {% endif %}
+        {% if field.help_text %}
+        <p class="form-text">{{ field.help_text|safe }}</p>
+        {% endif %}
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Atualizar Perfil</button>
+</form>
 
 {% endblock %}
