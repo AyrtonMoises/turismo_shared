@@ -1,11 +1,8 @@
-from django.db.models import Q, Value, fields
+from django.db.models import Q, Value
 from django.db.models.functions import Concat
-from django import forms
 
 import django_filters
 from django_filters import widgets
-
-from viagens.models import Viagem
 
 
 class ViagemFilter(django_filters.FilterSet):

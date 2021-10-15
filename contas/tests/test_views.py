@@ -130,8 +130,153 @@ class CadastroUpdateTestCase(TestCase):
         self.assertEquals(self.user.perfil.blog, 'https://meublog.com')
 
     def test_update_user_error(self):
-        """ Teste atualizando email com dado vazio """
+        """ Teste atualizando email com dados vazios """
         data = {'email': ''}
         self.client.login(email=self.user.email, password='123')
         response = self.client.post(self.url, data)
         self.assertFormError(response, 'form_user', 'email', 'Este campo é obrigatório.')
+
+
+class AlteracaoSenhaTestCase(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.url_alterar_senha = reverse('alterar_senha')
+        self.user = User.objects.create_user(
+            email='teste@teste.com',
+            password='senha_secreta'
+        )
+
+    def tearDown(self):
+        self.user.delete()
+
+    def test_alteracao_senha_ok(self):
+        """ Alteração de senha logado """
+        self.client.login(email=self.user.email, password='senha_secreta')
+        response = self.client.get(self.url_alterar_senha)
+        self.assertTemplateUsed(response, 'contas/alterar-senha.html')
+        self.assertEquals(response.status_code, 200)
+
+        data = {
+            'old_password' : 'senha_secreta',
+            'new_password1': 'novaSenha123',
+            'new_password2': 'novaSenha123'
+        }
+        response = self.client.post(self.url_alterar_senha, data)
+        self.assertRedirects(response, reverse('home'))
+        self.assertEquals(response.status_code, 302)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password("novaSenha123"))
+
+    def test_alteracao_senha_nao_autenticado(self):
+        """ Acessando Alteração de senha sem estar logado """
+        response = self.client.get(self.url_alterar_senha)
+        self.assertRedirects(response, reverse('login') + f"?next={self.url_alterar_senha}")
+        self.assertEquals(response.status_code, 302)
+
+    def test_alterando_com_senha_antiga_incorreta(self):
+        """ Alterando senha com senha antiga incorreta"""
+        self.client.login(email=self.user.email, password='senha_secreta')
+        data = {
+            'old_password' : 'senha_secreta_errada',
+            'new_password1': 'novaSenha123',
+            'new_password2': 'novaSenha123'
+        }
+        response = self.client.post(self.url_alterar_senha, data)
+        self.assertFormError(
+            response, 'form', 'old_password',
+            'A senha antiga foi digitada incorretamente. Por favor, informe-a novamente.'
+        )
+
+    def test_alterando_senha_com_nova_senha_incorreta(self):
+        """ Alterando senha com senha antiga incorreta"""
+        self.client.login(email=self.user.email, password='senha_secreta')
+        data = {
+            'old_password' : 'senha_secreta',
+            'new_password1': '123',
+            'new_password2': '123'
+        }
+        response = self.client.post(self.url_alterar_senha, data)
+        self.assertContains(response, "Esta senha é muito curta. Ela precisa conter pelo menos 8 caracteres.")
+        self.assertContains(response, "Esta senha é muito comum.")
+        self.assertContains(response, "Esta senha é inteiramente numérica.")
+
+
+class RedefinirSenhaTestCase(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.url_login = reverse('login')
+        self.user = User.objects.create_user(
+            email='teste@teste.com',
+            password='123'
+        )
+
+    def tearDown(self):
+        self.user.delete()
+
+    def test_redefinicao_senha_ok(self):
+        """ Teste solicitar redefinicao de senha """
+
+        # Testa rota e template
+        response = self.client.get(reverse('redefinir_senha'))
+        self.assertTemplateUsed(response, 'contas/redefinicao-senha/redefinir-senha.html')
+        self.assertEquals(response.status_code, 200)
+        data = {
+            'email': 'teste@teste.com'
+        }
+        response = self.client.post(reverse('redefinir_senha'), data)
+        self.assertRedirects(response, self.url_login)
+        self.assertTemplateUsed(response, 'contas/redefinicao-senha/assunto-redefinir-senha')
+        self.assertTemplateUsed(response, 'contas/redefinicao-senha/template-redefinir-senha.html')
+
+        # Testa link de redefinição de senha gerado
+        token = response.context[0]['token']
+        uid = response.context[0]['uid']
+        url_confirmar_redefinicao_senha = reverse('confirmar_redefinir_senha', kwargs={'token':token,'uidb64':uid})
+        response = self.client.get(url_confirmar_redefinicao_senha, follow=True)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'contas/redefinicao-senha/confirmar-redefinir-senha.html')
+
+        # Testa redefinição de nova senha com dados incorretos
+        reset_redirect = response.request["PATH_INFO"]
+        self.assertEqual(reset_redirect, f"/confirmar_redefinir_senha/{uid}/set-password/")
+        response = self.client.post(
+            reset_redirect,
+            {"new_password1": "123", "new_password2": "123"},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Esta senha é muito curta. Ela precisa conter pelo menos 8 caracteres.")
+        self.assertContains(response, "Esta senha é muito comum.")
+        self.assertContains(response, "Esta senha é inteiramente numérica.")
+
+        # Testa redefinição de nova senha com dados corretos
+        response = self.client.post(
+            reset_redirect,
+            {"new_password1": "novaSenha123", "new_password2": "novaSenha123"},
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, self.url_login)
+
+        # Testa acesso com nova senha
+        response = self.client.post(
+            self.url_login, {'email': self.user.email, 'senha': "novaSenha123"},
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('home'))
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password("novaSenha123"))
+
+        # Testa se link utilizado está inválido
+        url_confirmar_redefinicao_senha = reverse('confirmar_redefinir_senha', kwargs={'token':token,'uidb64':uid})
+        response = self.client.get(url_confirmar_redefinicao_senha, follow=True)
+        self.assertEquals(response.status_code, 200)
+        self.assertContains(response, "O link para validar senha é inválido")
+
+    def test_redefinicao_senha_email_inexistente(self):
+        """ Teste solicitar redefinicao de senha com email inexistente """
+        data = {
+            'email': 'email@teste.com'
+        }
+        response = self.client.post(reverse('redefinir_senha'), data)
+        self.assertFormError(response, 'form', 'email', 'Não existe um usuário com esse email')

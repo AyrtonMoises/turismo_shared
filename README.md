@@ -16,16 +16,7 @@ source myenv/bin/activate
 #### Instalação pacotes
 ```
 pip install -r requirements.txt
-crie suas variáveis de ambiente dentro de um arquivo .env na pasta setup
-Exemplo:
-DEBUG=True
-SECRET_KEY=sua_chave_secreta
-DATABASE_URL=postgres://usuario:senha@127.0.0.1:5432/sua_database
-EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
-EMAIL_HOST=SMTP
-EMAIL_HOST_USER=seu_email@gmail.com
-EMAIL_HOST_PASSWORD=senha_app_conta_gmail
-DEFAULT_FROM_EMAIL=seu_email@gmail.com
+crie suas variáveis de ambiente dentro de um arquivo .env seguindo o exemplo do arquivo .env.sample
 ```
 
 #### Migrações
