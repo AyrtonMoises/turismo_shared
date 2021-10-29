@@ -2,13 +2,14 @@
 
 {% block head %}
 <script src="https://unpkg.com/htmx.org@1.5.0"></script>
+
 {% endblock %}
 
 {% block content %}
 <h2>Pontos turísticos</h2>
 <button type="button" class="btn btn-primary" hx-get="{% url 'criar-form-ponto-turistico' %}" 
     hx-target="#rowforms" hx-swap="beforeend">
-    Nova linha
+    Novo
 </button>
 <a style="float: right;" class="btn btn-primary" href="{{ viagem.get_absolute_url }}">Voltar</a>
 <div id="rowforms"></div>

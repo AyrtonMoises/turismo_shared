@@ -50,7 +50,8 @@ class User(AbstractUser):
 
     objects = UserManager()
 
-    def full_name(self):
+    @property
+    def get_full_name(self):
         return self.first_name + ' ' + self.last_name
 
 

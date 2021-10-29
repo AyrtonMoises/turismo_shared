@@ -11,10 +11,10 @@
             <div class="col-lg-6 col-xl-5 py-lg-5">
               <div class="p-4 p-md-5">
                 <div class="badge bg-info bg-gradient rounded-pill mb-2">
-                  {{ destaque.user.full_name }}
+                  {{ destaque.user.get_full_name }}
                 </div>
                 <div class="h2 fw-bolder">{{ destaque.titulo }}</div>
-                <p>{{ destaque.resumo|truncatechars:60 }}</p>
+                <p>{{ destaque.resumo|truncatechars:70 }}</p>
                 <a class="stretched-link text-decoration-none" href="{% url 'post-viagem' pk=destaque.id %}">
                   Leia mais
                   <i class="bi bi-arrow-right"></i>

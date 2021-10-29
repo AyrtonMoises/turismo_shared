@@ -33,7 +33,7 @@
             {% for viagem in viagens %}
             <div class="mb-4">
                 <div class="small text-muted">
-                    {{ viagem.data_postado|date:"d/m/Y" }} Por: {{ viagem.user.full_name }}
+                    {{ viagem.data_postado|date:"d/m/Y" }} Por: {{ viagem.user.get_full_name }}
                 </div>
                 <a class="link-dark" href="{% url 'post-viagem' pk=viagem.id %}#"><h3>{{ viagem.titulo }}</h3></a>
             </div>

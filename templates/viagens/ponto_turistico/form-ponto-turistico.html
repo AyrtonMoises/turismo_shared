@@ -20,6 +20,7 @@
     <button type="button" class="btn btn-danger" hx-get="{% url 'detalhes-ponto-turistico' ponto_turistico.id %}" >Cancelar</button>
     {% else %}
     <button type="submit" class="btn btn-primary" hx-post=".">Salvar</button>
+    <button type="button" class="btn btn-danger" onclick="this.parentNode.parentNode.remove()">Cancelar</button>
     {% endif %}
 
 </form>

@@ -369,8 +369,8 @@ class PostViagemTestCase(TestCase):
         )
         self.url_post_viagem = reverse('post-viagem', kwargs={'pk': self.viagem.pk })
 
-    def test_post_viagem(self):
-        """ Teste visualizar post de viagem """
+    def test_post_viagem_ativa_ok(self):
+        """ Teste visualizar post de viagem ativa """
         response = self.client.get(self.url_post_viagem)
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'viagens/post_viagem/index.html')
@@ -379,6 +379,13 @@ class PostViagemTestCase(TestCase):
         self.assertEquals(viagem.ponto_turistico_viagem.count(), 1)
         self.assertEquals(viagem.ponto_turistico_viagem.count(), 1)
         self.assertEquals(viagem.likes.count(), 1)
+
+    def test_post_viagem_inativa_error(self):
+        """ Teste visualizar post de viagem inativa"""
+        self.viagem.ativo = False
+        self.viagem.save()
+        response = self.client.get(self.url_post_viagem)
+        self.assertEquals(response.status_code, 404)
 
     def test_curtir_post_viagem(self):
         """ Teste curtir postagem """

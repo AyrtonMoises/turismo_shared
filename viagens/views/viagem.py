@@ -91,7 +91,7 @@ class ListaViagensListView(ListView):
 
 def viagem_post(request, pk):
     """ Post da viagem cadastrada """
-    viagem = get_object_or_404(Viagem, pk=pk)
+    viagem = get_object_or_404(Viagem, pk=pk, ativo=True)
     form = ComentarioForm()
     dados = {
         'viagem': viagem,
