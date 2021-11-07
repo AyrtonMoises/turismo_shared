@@ -82,6 +82,8 @@ def perfil(request):
             form_perfil.save()
             messages.success(request, 'Perfil atualizado com sucesso')
             return redirect('perfil')
+        else:
+            return render(request, 'contas/perfil.html', {'form_user': form_user, 'form_perfil': form_perfil})
     else:
         form_user = UserPerfilForm(instance=request.user)
         form_perfil = PerfilForm(instance=request.user.perfil)

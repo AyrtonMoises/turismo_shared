@@ -37,9 +37,6 @@ class ViagemUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         """ Filtra viagens por usuário """
         return Viagem.objects.filter(user=self.request.user)
 
-    def get_success_url(self):
-        return reverse_lazy('editar-viagem', kwargs={'pk': self.kwargs['pk'] })
-
 
 class ViagemDeleteView(LoginRequiredMixin, DeleteView):
     """ Deletar viagem """

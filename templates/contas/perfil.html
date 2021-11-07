@@ -14,7 +14,7 @@
     {% csrf_token %}
     {% for field in form_user %}
         <p>{{ field.label_tag }} {{ field }} </p>
-        {% if form.errors %}
+        {% if form_user.errors %}
             {% for error in field.errors %}
             <p class="alert alert-danger">
                 <strong>{{ error|escape }}</strong>
@@ -27,7 +27,7 @@
     {% endfor %}
     {% for field in form_perfil %}
         <p>{{ field.label_tag }} {{ field }} </p>
-        {% if form.errors %}
+        {% if form_perfil.errors %}
             {% for error in field.errors %}
             <p class="alert alert-danger">
                 <strong>{{ error|escape }}</strong>
