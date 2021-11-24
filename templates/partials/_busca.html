@@ -1,3 +1,6 @@
-<form class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto" method="GET" action="{% url 'lista-viagens' %}">
-    <input type="text" name="titulo" class="form-control" placeholder="Busque uma viagem" aria-label="Buscar">
+<form class="col-12 col-lg-auto mb-6 mb-lg-0 me-lg-auto" method="GET" action="{% url 'lista-viagens' %}">
+    <div class="input-group">
+        <input type="text" name="titulo" class="form-control" placeholder="Busque uma viagem" aria-label="Buscar" aria-describedby="button-search">
+        <button class="btn btn-secondary" type="submit" id="button-search"><i class="bi bi-search"></i></button>
+    </div>
 </form>

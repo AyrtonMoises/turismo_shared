@@ -67,7 +67,7 @@ class MinhasViagensListView(LoginRequiredMixin, ListView):
 
 
 class ListaViagensListView(ListView):
-    """ Lista viagens cadastradas pelo usuário """
+    """ Lista viagens cadastradas pelos usuários """
     template_name = 'viagens/lista-viagens.html'
     context_object_name = 'viagens'
     paginate_by = 5
@@ -85,6 +85,7 @@ class ListaViagensListView(ListView):
             filter=ViagemFilter(self.request.GET, queryset=self.queryset)
         )
         return context
+
 
 def viagem_post(request, pk):
     """ Post da viagem cadastrada """

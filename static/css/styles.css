@@ -11290,3 +11290,10 @@ html {
   background-repeat: no-repeat;
   min-height: 15rem;
 }
+
+@media screen and (max-width: 600px) {
+  .rounded, .mx-auto, .d-block, .m-3{
+    height: 300px !important;
+    width: 300px !important;
+  }
+}

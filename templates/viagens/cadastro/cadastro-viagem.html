@@ -6,8 +6,11 @@
     Voltar
 </a>
 <h2>Viagem</h2>
-{% if viagem.foto %}
-<img src="{{ viagem.foto.url }}" class="rounded mx-auto d-block" height="300px" width="500px">
+{% if viagem.foto %} 
+<img id="previewImage" src="{{ viagem.foto.url }}" class="rounded mx-auto d-block m-3" height="300px" width="500px">
+{% else %}
+<img id="previewImage" class="rounded mx-auto d-block m-3" height="300px" width="500px" style="display: none !important;">
+
 {% endif %}
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
@@ -24,15 +27,28 @@
     <p class="form-text">{{ field.help_text|safe }}</p>
     {% endif %}
     {% endfor %}
-    
+
     <button type="submit" class="btn btn-primary">Salvar</button>
     {% if viagem %}
     <a href="{% url 'deletar-viagem' pk=viagem.pk %}" class="btn btn-danger">Deletar</a>
-    <a style="float: right;" class="btn btn-primary float-right" href="{% url 'criar-ponto-turistico' id_viagem=viagem.pk %}">
+    <a style="float: right;" class="btn btn-primary float-right"
+        href="{% url 'criar-ponto-turistico' id_viagem=viagem.pk %}">
         Adicionar pontos turísticos
     </a>
     {% endif %}
 
 </form>
 
+{% endblock %}
+
+{% block js %}
+<script>
+    id_foto.onchange = evt => {
+        const [file] = id_foto.files
+        if (file) {
+            previewImage.src = URL.createObjectURL(file);
+            previewImage.style.display = 'block';
+        }
+    }
+</script>
 {% endblock %}
