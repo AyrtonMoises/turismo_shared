@@ -6,9 +6,9 @@
 
 <form method="POST" enctype="multipart/form-data">
     {% if user.perfil.foto %}
-    <img src="{{ user.perfil.foto.url }}" class="rounded mx-auto d-block" height="300px" width="300px">
+    <img id="previewImage" class="rounded mx-auto d-block m-3" src="{{ user.perfil.foto.url }}" height="300px" width="300px">
     {% else %}
-    <img src="{% static 'assets/default-avatar.jpeg' %}" class="rounded mx-auto d-block" alt="...">
+    <img id="previewImage" class="rounded mx-auto d-block m-3" src="{% static 'assets/default-avatar.jpeg' %}" height="300px" width="300px">
     {% endif %}
 
     {% csrf_token %}
@@ -41,4 +41,15 @@
     <button type="submit" class="btn btn-primary">Atualizar Perfil</button>
 </form>
 
+{% endblock %}
+
+{% block js %}
+<script>
+    id_foto.onchange = evt => {
+        const [file] = id_foto.files
+        if (file) {
+            previewImage.src = URL.createObjectURL(file);
+        }
+    }
+</script>
 {% endblock %}
